@@ -22,9 +22,17 @@ public class IDrawTest {
 		System.setProperty("webdriver.chrome.driver",
 				"C:\\Users\\User\\IdeaProjects\\SeleniumCats\\src\\test\\resources\\webdrivers\\chromedriver.exe");
 
-		// Set ChromeOptions for any specific Chrome configurations
+		// Set ChromeOptions for cookie and notification configurations
 		ChromeOptions cOptions = new ChromeOptions();
 		cOptions.setHeadless(false);  // Change to true if headless mode is preferred
+
+		// Disable notifications and third-party cookies
+		cOptions.addArguments("--disable-notifications");
+		cOptions.addArguments("--disable-popup-blocking");
+		cOptions.addArguments("--disable-blink-features=AutomationControlled"); // Hide automation control
+
+		// Chrome flag to block third-party cookies
+		cOptions.addArguments("profile.default_content_setting_values.cookies=2");
 
 		// Initialize the ChromeDriver with ChromeOptions
 		driver = new ChromeDriver(cOptions);
@@ -45,43 +53,47 @@ public class IDrawTest {
 	}
 
 	@Test
-	public void drawInital() throws InterruptedException {
-		// Find the drawing canvas
-		WebElement canvas = driver.findElement(By.cssSelector("#catch"));
+	public void drawInital() {
+		try {
+			// Find the drawing canvas
+			WebElement canvas = driver.findElement(By.cssSelector("#catch"));
 
-		// Start drawing by clicking on the canvas
-		canvas.click();
+			// Start drawing by clicking on the canvas
+			canvas.click();
 
-		// Drawing the letter "I"
-		action.moveToElement(canvas)
-				.clickAndHold()                       // Start at the top of "I"
-				.moveByOffset(0, 200)                 // Draw vertical line down
-				.release()                            // Finish vertical line
-				.perform();
+			// Drawing the letter "I"
+			action.moveToElement(canvas)
+					.clickAndHold()                       // Start at the top of "I"
+					.moveByOffset(0, 200)                 // Draw vertical line down
+					.release()                            // Finish vertical line
+					.perform();
 
-		action.moveByOffset(-50, -200)               // Move to the top-left for the top horizontal line
-				.clickAndHold()
-				.moveByOffset(100, 0)                 // Draw top horizontal line
-				.release()
-				.perform();
+			action.moveByOffset(-50, -200)               // Move to the top-left for the top horizontal line
+					.clickAndHold()
+					.moveByOffset(100, 0)                 // Draw top horizontal line
+					.release()
+					.perform();
 
-		action.moveByOffset(-100, 200)                // Move to the bottom-left for the bottom horizontal line
-				.clickAndHold()
-				.moveByOffset(100, 0)                 // Draw bottom horizontal line
-				.release()
-				.perform();
+			action.moveByOffset(-100, 200)                // Move to the bottom-left for the bottom horizontal line
+					.clickAndHold()
+					.moveByOffset(100, 0)                 // Draw bottom horizontal line
+					.release()
+					.perform();
 
-		Thread.sleep(2000);  // Short pause before drawing the next letter
+			Thread.sleep(2000);  // Short pause before drawing the next letter
 
-		// Drawing the letter "Z"
-		action.moveByOffset(200, -200)               // Move to starting position for "Z"
-				.clickAndHold()
-				.moveByOffset(100, 0)                 // Draw top horizontal line
-				.moveByOffset(-100, 200)              // Draw diagonal line down
-				.moveByOffset(100, 0)                 // Draw bottom horizontal line
-				.release()
-				.perform();
+			// Drawing the letter "Z"
+			action.moveByOffset(200, -200)               // Move to starting position for "Z"
+					.clickAndHold()
+					.moveByOffset(100, 0)                 // Draw top horizontal line
+					.moveByOffset(-100, 200)              // Draw diagonal line down
+					.moveByOffset(100, 0)                 // Draw bottom horizontal line
+					.release()
+					.perform();
 
-		Thread.sleep(10000);  // Wait to observe the drawing, if needed
+			Thread.sleep(10000);  // Wait to observe the drawing, if needed
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 }
